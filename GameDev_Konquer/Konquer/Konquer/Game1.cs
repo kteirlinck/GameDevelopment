@@ -17,8 +17,13 @@ namespace Konquer
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
-        private Texture2D _tileTexture, _playerTexture;
+        private Texture2D _tileTexture, _playerTexture, _enemyTexture;
         private Player _player;
+
+        //private Enemy _demon;
+        private List<Enemy> _demonHorde;
+        private float _spawn = 0;
+        private float _mobDistance;
 
         private List<Coin> _coins;
 
@@ -65,7 +70,11 @@ namespace Konquer
 
             _player = new Player(_playerTexture, new Vector2(50, 50), _spriteBatch);
             _vortex = new Vortex(null, new Vector2(0, 0), _spriteBatch);
-            
+
+            //_demon = new Enemy(_enemyTexture, new Vector2(250, 250), _spriteBatch, _mobDistance);
+            //_demon.Load(Content);
+            _demonHorde = new List<Enemy>();
+
             _player.Load(Content);
             _vortex.Load(Content);
             _board = new Board(_spriteBatch, _tileTexture, 59, 25);
@@ -116,6 +125,7 @@ namespace Konquer
                 _board.CreateNewBoard();
 
                 _player.Position = new Vector2(50, ScreenHeight - (TileHeight * 2));
+                //_demon.Position = new Vector2(250, 250);
             }
 
             base.Update(gameTime);
@@ -123,8 +133,40 @@ namespace Konquer
             _player.Update(gameTime);
             _vortex.Update(gameTime, _player);
 
+            _spawn += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            foreach (Enemy demon in _demonHorde)
+                demon.Update(gameTime, _player.Position);
+            if(gc.CurrentLevel == 1)LoadEnemies();
+
             for (int i = 0; i < gc.MaxScoreCount; i++) {
                 _coins[i].Update(gameTime, _player);
+            }
+        }
+
+        public void LoadEnemies()
+        {
+            int randX = rand.Next(100, 1788);
+            int randY = rand.Next(100, 900);
+
+            if (_spawn >= 1)
+            {
+                _spawn = 0;
+                if (_demonHorde.Count < 100) {
+                    _demonHorde.Add(new Enemy(_enemyTexture, new Vector2(randX, randY), _spriteBatch, _mobDistance));
+                    for (int i = 0; i < _demonHorde.Count; i++)
+                    {
+                        _demonHorde[i].Load(Content);
+                    }
+                }
+            }
+
+            for (int i = 0; i < _demonHorde.Count; i++)
+            {
+                if (gc.CurrentLevel == 1 && gc.LevelFinished)
+                {
+                    _demonHorde.RemoveAt(i);
+                    i--;
+                }
             }
         }
 
@@ -144,6 +186,11 @@ namespace Konquer
             for (int i = 0; i < gc.MaxScoreCount; i++) {
                 _coins[i].Draw(gameTime);
             }
+
+            //_demon.Draw(gameTime);
+
+            foreach (Enemy demon in _demonHorde)
+                demon.Draw(gameTime);
 
             _player.Draw(gameTime);
             WriteDebugInfo();

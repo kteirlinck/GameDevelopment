@@ -51,6 +51,7 @@
     <Compile Include="Classes\Screens\GameScreen.cs" />
     <Compile Include="Classes\Screens\MenuScreen.cs" />
     <Compile Include="Classes\Sprites\Coin.cs" />
+    <Compile Include="Classes\Sprites\Enemy.cs" />
     <Compile Include="Classes\Sprites\Vortex.cs" />
     <Compile Include="Classes\Sprites\Player.cs" />
     <Compile Include="Classes\Sprites\Sprite.cs" />

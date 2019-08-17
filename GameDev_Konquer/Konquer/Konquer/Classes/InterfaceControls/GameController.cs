@@ -12,7 +12,6 @@ namespace Konquer.Classes.InterfaceControls {
         public int MaxScoreCount { get; set; }
 
         public int CurrentLevel { get; set; }
-
         private int _scoreCount;
         public int ScoreCount { 
             get { return _scoreCount; }
