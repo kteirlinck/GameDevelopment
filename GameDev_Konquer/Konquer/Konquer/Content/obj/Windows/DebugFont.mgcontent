@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:/Users/Koen/Documents/0_EAICT_jaar3_sem1/Game_Development_18-19/Konquer/GameDev_Konquer/Konquer/Konquer/Content/DebugFont.spritefont</SourceFile>
+  <SourceTime>2019-08-16T23:27:32+02:00</SourceTime>
+  <DestFile>C:/Users/Koen/Documents/0_EAICT_jaar3_sem1/Game_Development_18-19/Konquer/GameDev_Konquer/Konquer/Konquer/Content/bin/Windows/DebugFont.xnb</DestFile>
+  <DestTime>2019-08-17T12:39:26.1736348+02:00</DestTime>
+  <Importer>FontDescriptionImporter</Importer>
+  <ImporterTime>2017-03-01T16:05:36+01:00</ImporterTime>
+  <Processor>FontDescriptionProcessor</Processor>
+  <ProcessorTime>2017-03-01T16:05:36+01:00</ProcessorTime>
+  <Parameters>
+    <Key>PremultiplyAlpha</Key>
+    <Value>True</Value>
+  </Parameters>
+  <Parameters>
+    <Key>TextureFormat</Key>
+    <Value>Compressed</Value>
+  </Parameters>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput />
+</PipelineBuildEvent>
