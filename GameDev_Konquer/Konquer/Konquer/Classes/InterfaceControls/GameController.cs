@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace Konquer.Classes.InterfaceControls {
     class GameController {
-
         public bool LevelFinished { get; set; }
 
         public int MaxScoreCount { get; set; }

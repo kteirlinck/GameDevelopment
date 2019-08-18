@@ -41,15 +41,13 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Classes\Entity\Boss.cs" />
     <Compile Include="Classes\InterfaceControls\Button.cs" />
     <Compile Include="Classes\InterfaceControls\Control.cs" />
     <Compile Include="Classes\InterfaceControls\GameController.cs" />
     <Compile Include="Classes\Models\Spritesheet.cs" />
     <Compile Include="Classes\Models\Animation.cs" />
     <Compile Include="Classes\Models\MovementWrapper.cs" />
-    <Compile Include="Classes\Screens\BaseScreen.cs" />
-    <Compile Include="Classes\Screens\GameScreen.cs" />
-    <Compile Include="Classes\Screens\MenuScreen.cs" />
     <Compile Include="Classes\Entity\Coin.cs" />
     <Compile Include="Classes\Entity\Enemy.cs" />
     <Compile Include="Classes\Entity\Vortex.cs" />

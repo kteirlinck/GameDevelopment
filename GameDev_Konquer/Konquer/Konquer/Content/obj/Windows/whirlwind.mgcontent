@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/Koen/Documents/0_EAICT_jaar3_sem1/Game_Development_18-19/TempProj/Konquer/Konquer/Content/whirlwind.png</SourceFile>
+  <SourceFile>C:/Users/Koen/Documents/0_EAICT_jaar3_sem1/Game_Development_18-19/Konquer/GameDev_Konquer/GameDevelopment/GameDev_Konquer/Konquer/Konquer/Content/whirlwind.png</SourceFile>
   <SourceTime>2019-08-18T00:25:43+02:00</SourceTime>
-  <DestFile>C:/Users/Koen/Documents/0_EAICT_jaar3_sem1/Game_Development_18-19/TempProj/Konquer/Konquer/Content/bin/Windows/whirlwind.xnb</DestFile>
-  <DestTime>2019-08-18T17:39:47.2387324+02:00</DestTime>
+  <DestFile>C:/Users/Koen/Documents/0_EAICT_jaar3_sem1/Game_Development_18-19/Konquer/GameDev_Konquer/GameDevelopment/GameDev_Konquer/Konquer/Konquer/Content/bin/Windows/whirlwind.xnb</DestFile>
+  <DestTime>2019-08-18T18:12:13.866023+02:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2017-03-01T16:05:36+01:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

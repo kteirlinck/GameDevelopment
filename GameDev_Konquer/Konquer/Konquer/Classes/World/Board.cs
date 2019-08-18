@@ -14,6 +14,7 @@ namespace Konquer.Classes.World
     public class Board
     {
         public Tile[,] Tiles { get; set; }
+        
         public Texture2D TileTexture { get; set; }
         public SpriteBatch SpriteBatch { get; set; }
         public int Columns
@@ -52,6 +53,7 @@ namespace Konquer.Classes.World
             TileTexture = tileTexture;
             SpriteBatch = spriteBatch;
             Tiles = new Tile[Columns, Rows];
+
         }
 
         public void CreateNewRandomBoard() {

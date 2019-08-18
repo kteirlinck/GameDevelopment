@@ -17,10 +17,12 @@ namespace Konquer.Classes.Sprites
         Spritesheet demonAnimation;
 
         private SpriteBatch enemySpriteBatch;
+        private Random rand;
+        private Rectangle CollisionRectangle;
+
         public Vector2 Movement;
         public Vector2 Origin;
         public Vector2 EnemyPosition;
-        public Rectangle CollisionRectangle;
 
         public float Rotation = 0f;
 
@@ -36,10 +38,9 @@ namespace Konquer.Classes.Sprites
         public bool HasExpired;
         public int RespawnTime;
 
-        private Random rand;
 
 
-        public void Load(ContentManager Content)
+        public virtual void Load(ContentManager Content)
         {
             demonAnimation = new Spritesheet(Content.Load<Texture2D>("demon-idle"), 160, 0.3f, true);
             animationPlayer.PlayAnimation(demonAnimation);
@@ -64,7 +65,7 @@ namespace Konquer.Classes.Sprites
             HasExpired = false;
         }
 
-        public void Update(GameTime gameTime, Player player)
+        public virtual void Update(GameTime gameTime, Player player)
         {
             CheckExpireThresholdReached();
 
@@ -111,9 +112,7 @@ namespace Konquer.Classes.Sprites
                 else if (PlayerDistanceY == 0)
                     Movement.Y = 0f;
             }
-
-
-            CheckPlayerCollision(player);
+            //checkPlayerCollision(player);
         }
 
         public void CheckExpireThresholdReached() {
@@ -132,16 +131,16 @@ namespace Konquer.Classes.Sprites
             }
         }
 
-        private void CheckPlayerCollision(Player player) {
-            CollisionRectangle.X = (int)Position.X;
-            CollisionRectangle.Y = (int)Position.Y;
+        //private void checkPlayerCollision(Player player) {
+        //    CollisionRectangle.X = (int)Position.X;
+        //    CollisionRectangle.Y = (int)Position.Y;
 
-            if (player.Bounds.Intersects(CollisionRectangle)) {
-                GameController.Instance.FinishLevel();
-            }
-        }
+        //    if (player.Bounds.Intersects(CollisionRectangle)) {
+        //        GameController.Instance.FinishLevel();
+        //    }
+        //}
 
-        private void UpdatePosition(GameTime gameTime)
+        public void UpdatePosition(GameTime gameTime)
         {
             Position += Movement * (float)gameTime.ElapsedGameTime.TotalMilliseconds / 15;
         }
@@ -150,7 +149,6 @@ namespace Konquer.Classes.Sprites
         {
             if (HasExpired)
                 return;
-
 
             SpriteEffects flip = SpriteEffects.None;
 
