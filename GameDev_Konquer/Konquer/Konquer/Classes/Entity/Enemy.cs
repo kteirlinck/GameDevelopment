@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Konquer.Classes.InterfaceControls;
 using Konquer.Classes.Models;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -19,6 +20,7 @@ namespace Konquer.Classes.Sprites
         public Vector2 Movement;
         public Vector2 Origin;
         public Vector2 EnemyPosition;
+        public Rectangle CollisionRectangle;
 
         public float Rotation = 0f;
 
@@ -28,10 +30,21 @@ namespace Konquer.Classes.Sprites
         public float PlayerDistanceX;
         public float PlayerDistanceY;
 
+        public long ExpiredTimeSeconds;
+        public long StartTimeSeconds;
+        public long ExpireThreshold;
+        public bool HasExpired;
+        public int RespawnTime;
+
+        private Random rand;
+
+
         public void Load(ContentManager Content)
         {
             demonAnimation = new Spritesheet(Content.Load<Texture2D>("demon-idle"), 160, 0.3f, true);
             animationPlayer.PlayAnimation(demonAnimation);
+
+            CollisionRectangle = new Rectangle((int)Position.X, (int)Position.Y, demonAnimation.FrameWidth, demonAnimation.FrameHeight);
         }
 
         public Enemy(Texture2D texture, Vector2 position, SpriteBatch spriteBatch, float newDistance) : base(texture, position, spriteBatch)
@@ -40,12 +53,27 @@ namespace Konquer.Classes.Sprites
             EnemyPosition = position;
             Distance = newDistance;
             OldDistance = Distance;
+            
+
+            rand = new Random();
+
+            ExpiredTimeSeconds = 0;
+            StartTimeSeconds = DateTime.Now.Ticks / 1000 / 10000;
+            ExpireThreshold = 10;
+            RespawnTime = 5;
+            HasExpired = false;
         }
 
-        public void Update(GameTime gameTime, Vector2 playerPosition)
+        public void Update(GameTime gameTime, Player player)
         {
+            CheckExpireThresholdReached();
+
+            if (HasExpired)
+                return;
+
             EnemyPosition += Movement;
             Origin = new Vector2(demonAnimation.FrameWidth / 2, demonAnimation.FrameHeight / 2);
+
 
             if (Distance <= 0)
             {
@@ -60,7 +88,7 @@ namespace Konquer.Classes.Sprites
 
             if (Right) Distance += 1; else Distance -= 1;
 
-            PlayerDistanceX = playerPosition.X - EnemyPosition.X;
+            PlayerDistanceX = player.Position.X - EnemyPosition.X + player.Bounds.Width;
 
             if (PlayerDistanceX >= -2000 && PlayerDistanceX <= 2000)
             {
@@ -72,7 +100,7 @@ namespace Konquer.Classes.Sprites
                     Movement.X = 0f;
             }
 
-            PlayerDistanceY = playerPosition.Y - EnemyPosition.Y;
+            PlayerDistanceY = player.Position.Y - EnemyPosition.Y + player.Bounds.Height;
 
             if (PlayerDistanceY >= -2000 && PlayerDistanceY <= 2000)
             {
@@ -83,6 +111,34 @@ namespace Konquer.Classes.Sprites
                 else if (PlayerDistanceY == 0)
                     Movement.Y = 0f;
             }
+
+
+            CheckPlayerCollision(player);
+        }
+
+        public void CheckExpireThresholdReached() {
+            ExpiredTimeSeconds = DateTime.Now.Ticks / 1000 / 10000;
+            if (ExpiredTimeSeconds - StartTimeSeconds > ExpireThreshold) {
+                HasExpired = true;
+            }
+
+            if (HasExpired && ExpiredTimeSeconds - StartTimeSeconds > (ExpireThreshold + RespawnTime)) {
+                //float posX = Position.X < Konquer.ScreenWidth / 2 ? Konquer.ScreenWidth - Position.X : Position.X - Konquer.ScreenWidth;
+                //float posY = Position.Y < Konquer.ScreenHeight / 2 ? Konquer.ScreenHeight - Position.Y : Position.Y - Konquer.ScreenHeight;
+                //Position = new Vector2(100, 100);
+                
+                StartTimeSeconds = ExpiredTimeSeconds;
+                HasExpired = false;
+            }
+        }
+
+        private void CheckPlayerCollision(Player player) {
+            CollisionRectangle.X = (int)Position.X;
+            CollisionRectangle.Y = (int)Position.Y;
+
+            if (player.Bounds.Intersects(CollisionRectangle)) {
+                GameController.Instance.FinishLevel();
+            }
         }
 
         private void UpdatePosition(GameTime gameTime)
@@ -92,6 +148,10 @@ namespace Konquer.Classes.Sprites
 
         public override void Draw(GameTime gameTime)
         {
+            if (HasExpired)
+                return;
+
+
             SpriteEffects flip = SpriteEffects.None;
 
             if (Movement.X >= 0)

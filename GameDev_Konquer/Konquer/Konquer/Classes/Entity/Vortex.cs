@@ -31,7 +31,7 @@ namespace Konquer.Classes.Sprites
             animation = new Spritesheet(Content.Load<Texture2D>("whirlwind"), 192, 0.2f, true);
             animationPlayer.PlayAnimation(animation);
          
-            Position = new Vector2((Game1.ScreenWidth / 2) - (animation.FrameWidth / 2), (Game1.ScreenHeight / 2) + (animation.FrameHeight / 2));
+            Position = new Vector2((Konquer.ScreenWidth / 2) - (animation.FrameWidth / 2), (Konquer.ScreenHeight / 2) + (animation.FrameHeight / 2));
             collisionRectangle = new Rectangle((int)Position.X - animation.FrameWidth, (int)Position.Y - animation.FrameHeight, animation.FrameWidth, animation.FrameHeight);
         }
 

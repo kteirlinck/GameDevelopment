@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/Melvin/Downloads/supreme-octo-couscous-master/supreme-octo-couscous-master/Konquer/Konquer/Content/hero/gothic-hero-hurt.png</SourceFile>
-  <SourceTime>2019-08-16T23:27:32+02:00</SourceTime>
-  <DestFile>C:/Users/Melvin/Downloads/supreme-octo-couscous-master/supreme-octo-couscous-master/Konquer/Konquer/Content/bin/Windows/Content/hero/gothic-hero-hurt.xnb</DestFile>
-  <DestTime>2019-08-16T23:45:45.2997699+02:00</DestTime>
+  <SourceFile>C:/Users/Melvin/Downloads/GameDevelopment-master/GameDevelopment-master/GameDev_Konquer/Konquer/Konquer/Content/hero/gothic-hero-hurt.png</SourceFile>
+  <SourceTime>2019-08-18T00:25:43+02:00</SourceTime>
+  <DestFile>C:/Users/Melvin/Downloads/GameDevelopment-master/GameDevelopment-master/GameDev_Konquer/Konquer/Konquer/Content/bin/Windows/Content/hero/gothic-hero-hurt.xnb</DestFile>
+  <DestTime>2019-08-18T00:40:52.1650111+02:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2018-12-08T17:35:54+01:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

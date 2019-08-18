@@ -12,7 +12,7 @@ namespace Konquer
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
-    public class Game1 : Game
+    public class Konquer : Game
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
@@ -43,7 +43,7 @@ namespace Konquer
 
 
 
-        public Game1()
+        public Konquer()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -83,11 +83,11 @@ namespace Konquer
 
             _coins = new List<Coin>();
             for (int i = 0; i < gc.MaxScoreCount; i++) {
-                Vector2 randPos = new Vector2((rand.Next(0, Game1.ScreenWidth / TileWidth) * TileWidth) + 48, rand.Next(0, Game1.ScreenHeight / TileHeight) * TileHeight);
+                Vector2 randPos = new Vector2((rand.Next(0, Konquer.ScreenWidth / TileWidth) * TileWidth) + 48, rand.Next(0, Konquer.ScreenHeight / TileHeight) * TileHeight);
                 Rectangle coinRect = new Rectangle((int)randPos.X, (int)randPos.Y - TileHeight, TileWidth, TileHeight);
 
                 while(!_board.HasRoomForRectangle(coinRect)) {
-                    randPos = new Vector2((rand.Next(0, Game1.ScreenWidth / TileWidth) * TileWidth) + TileHeight, rand.Next(0, Game1.ScreenHeight / TileHeight) * TileHeight);
+                    randPos = new Vector2((rand.Next(0, Konquer.ScreenWidth / TileWidth) * TileWidth) + TileHeight, rand.Next(0, Konquer.ScreenHeight / TileHeight) * TileHeight);
                     coinRect = new Rectangle((int)randPos.X, (int)randPos.Y, TileWidth, TileHeight);
                 }
 
@@ -97,14 +97,9 @@ namespace Konquer
 
             //Animated background
             List<Texture2D> _BG = new List<Texture2D>();
-            _BG.Add(Content.Load<Texture2D>("BG/BG0"));
-            _BG.Add(Content.Load<Texture2D>("BG/BG1"));
-            _BG.Add(Content.Load<Texture2D>("BG/BG2"));
-            _BG.Add(Content.Load<Texture2D>("BG/BG3"));
-            _BG.Add(Content.Load<Texture2D>("BG/BG4"));
-            _BG.Add(Content.Load<Texture2D>("BG/BG5"));
-            _BG.Add(Content.Load<Texture2D>("BG/BG6"));
-            _BG.Add(Content.Load<Texture2D>("BG/BG7"));
+            for (int i = 0; i < 8; i++) {
+                _BG.Add(Content.Load<Texture2D>("BG/BG" + i));
+            }
             background1 = new Background();
             background1.SetBG(_BG);
 
@@ -135,7 +130,7 @@ namespace Konquer
 
             _spawn += (float)gameTime.ElapsedGameTime.TotalSeconds;
             foreach (Enemy demon in _demonHorde)
-                demon.Update(gameTime, _player.Position);
+                demon.Update(gameTime, _player);
             if(gc.CurrentLevel == 1)LoadEnemies();
 
             for (int i = 0; i < gc.MaxScoreCount; i++) {
@@ -151,7 +146,7 @@ namespace Konquer
             if (_spawn >= 1)
             {
                 _spawn = 0;
-                if (_demonHorde.Count < 100) {
+                if (_demonHorde.Count < 3) {
                     _demonHorde.Add(new Enemy(_enemyTexture, new Vector2(randX, randY), _spriteBatch, _mobDistance));
                     for (int i = 0; i < _demonHorde.Count; i++)
                     {
