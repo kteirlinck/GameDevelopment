@@ -53,24 +53,52 @@ namespace Konquer.Classes.World
             TileTexture = tileTexture;
             SpriteBatch = spriteBatch;
             Tiles = new Tile[Columns, Rows];
-
         }
 
         public void CreateNewRandomBoard() {
             CreateRandomBoard();
             SetBorderTilesBlocked();
             UnrestrictedPlayerSpawn();
-
             CurrentBoard = this;
         }
 
-        public void CreateNewBoard()
+        public void CreateNewBossBoard()
         {
             CreateBoard();
             SetBorderTilesBlocked();
             UnrestrictedPlayerSpawn();
-
+            SetBossEncounterPlatforms();
             CurrentBoard = this;
+        }
+
+        public void SetBossEncounterPlatforms()
+        {
+            //upper platforms
+            Tiles[19, 6].IsBlocked = true;
+            Tiles[20, 6].IsBlocked = true;
+            Tiles[21, 6].IsBlocked = true;
+
+            Tiles[35, 6].IsBlocked = true;
+            Tiles[36, 6].IsBlocked = true;
+            Tiles[37, 6].IsBlocked = true;
+
+            //middle platforms
+            Tiles[12, 12].IsBlocked = true;
+            Tiles[13, 12].IsBlocked = true;
+            Tiles[14, 12].IsBlocked = true;
+
+            Tiles[44, 12].IsBlocked = true;
+            Tiles[45, 12].IsBlocked = true;
+            Tiles[46, 12].IsBlocked = true;
+
+            //lower platforms
+            Tiles[19, 18].IsBlocked = true;
+            Tiles[20, 18].IsBlocked = true;
+            Tiles[21, 18].IsBlocked = true;
+                       
+            Tiles[35, 18].IsBlocked = true;
+            Tiles[36, 18].IsBlocked = true;
+            Tiles[37, 18].IsBlocked = true;
         }
 
         public Vector2 AllowedMovement(Vector2 originalPosition, Vector2 destination, Rectangle boundingRectangle)

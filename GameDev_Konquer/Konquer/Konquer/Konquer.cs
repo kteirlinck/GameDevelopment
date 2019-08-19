@@ -20,7 +20,6 @@ namespace Konquer
 
         private Texture2D _tileTexture, _playerTexture, _enemyTexture, _bossTexture, _pauseMenuTexture;
         private Player _player;
-
         private Boss _geryon;
         private List<Enemy> _demonHorde;
         private float _spawn = 0;
@@ -37,14 +36,19 @@ namespace Konquer
 
         private GameController gc;
         private bool _pauseGame { get; set; }
-        private Random rand = new Random();
+        private bool _winGame { get; set; }
+        private bool _loseGame { get; set; }
 
-        // Boss Health bar
+        private Random _rand = new Random();
+
+        // Boss Stuff
         private Texture2D _healthTexture;
         private Rectangle _healthRectangle;
         public int GeryonHealth = 100;
 
+        //screen resolution
         public static int ScreenWidth = 1888, ScreenHeight = 1000;
+        //tile dimensions
         public static int TileWidth = 32, TileHeight = 40;
 
         public Konquer()
@@ -57,7 +61,7 @@ namespace Konquer
             gc = GameController.Instance;
             gc.CurrentLevel = 1;
             gc.ScoreCount = 0;
-            gc.MaxScoreCount = 1;
+            gc.MaxScoreCount = 2;
         }
 
         protected override void Initialize()
@@ -69,7 +73,9 @@ namespace Konquer
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             _tileTexture = Content.Load<Texture2D>("Tiles/L2/BlockA1");
-            _playerTexture = Content.Load<Texture2D>("Tiles/L2/Platform");
+            _playerTexture = Content.Load<Texture2D>("Tiles/L2/BlockA1");
+            _enemyTexture = Content.Load<Texture2D>("Tiles/L2/BlockA1");
+            _bossTexture = Content.Load<Texture2D>("Tiles/L2/BlockA1");
 
             _player = new Player(_playerTexture, new Vector2(50, 50), _spriteBatch);
             _vortex = new Vortex(null, new Vector2(0, 0), _spriteBatch);
@@ -86,11 +92,11 @@ namespace Konquer
 
             _coins = new List<Coin>();
             for (int i = 0; i < gc.MaxScoreCount; i++) {
-                Vector2 randPos = new Vector2((rand.Next(0, Konquer.ScreenWidth / TileWidth) * TileWidth) + 48, rand.Next(0, Konquer.ScreenHeight / TileHeight) * TileHeight);
+                Vector2 randPos = new Vector2((_rand.Next(0, Konquer.ScreenWidth / TileWidth) * TileWidth) + 24, _rand.Next(0, Konquer.ScreenHeight / TileHeight) * TileHeight);
                 Rectangle coinRect = new Rectangle((int)randPos.X, (int)randPos.Y - TileHeight, TileWidth, TileHeight);
 
-                while(!_board.HasRoomForRectangle(coinRect)) {
-                    randPos = new Vector2((rand.Next(0, Konquer.ScreenWidth / TileWidth) * TileWidth) + TileHeight, rand.Next(0, Konquer.ScreenHeight / TileHeight) * TileHeight);
+                if(!_board.HasRoomForRectangle(coinRect)) {
+                    randPos = new Vector2(_rand.Next(TileWidth, (ScreenWidth - (TileWidth * 2))), _rand.Next(0, Konquer.ScreenHeight / TileHeight) * TileHeight);
                     coinRect = new Rectangle((int)randPos.X, (int)randPos.Y, TileWidth, TileHeight);
                 }
 
@@ -121,8 +127,11 @@ namespace Konquer
 
         protected override void Update(GameTime gameTime)
         {
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+                Exit();
             KeyboardState pauseButton = Keyboard.GetState();
             if (pauseButton.IsKeyDown(Keys.P)) { _pauseGame = false; }
+            CheckLivingEntityCollision(_player);
             if (!_pauseGame)
             {
                 if (gc.CurrentLevel == 1 && gc.LevelFinished)
@@ -130,7 +139,7 @@ namespace Konquer
                     gc.LevelFinished = false;
                     gc.CurrentLevel = 2;
                     _board = new Board(_spriteBatch, _tileTexture, 59, 25);
-                    _board.CreateNewBoard();
+                    _board.CreateNewBossBoard();
 
                     _player.Position = new Vector2(50, ScreenHeight - (TileHeight * 2));
                     _geryon.Position = new Vector2(ScreenWidth - (TileWidth * 2), ScreenHeight - (TileHeight * 2));
@@ -155,14 +164,15 @@ namespace Konquer
                 {
                     _geryon.Update(gameTime, _player);
                     _healthRectangle = new Rectangle(ScreenWidth / 2, ScreenHeight / 10, _geryon.Health, 20);
+                    CheckWinCondition();
                 }
             }
         }
 
         public void LoadEnemies()
         {
-            int randX = rand.Next(100, 1788);
-            int randY = rand.Next(100, 900);
+            int randX = _rand.Next(100, 1788);
+            int randY = _rand.Next(100, 900);
 
             if (_spawn >= 1)
             {
@@ -186,16 +196,38 @@ namespace Konquer
             }
         }
 
-        //public void CheckBossCollision(Player _player)
-        //{
-        //    _geryon.BossCollisionRectangle.X = (int)_geryon.Position.X;
-        //    _geryon.BossCollisionRectangle.Y = (int)_geryon.Position.Y;
+        public void CheckLivingEntityCollision(Player _player)
+        {
+            Rectangle playerCollRect = new Rectangle((int)_player.Position.X, (int)_player.Position.Y, _playerTexture.Width, _playerTexture.Height);
+            Rectangle bossCollRect = new Rectangle((int)_geryon.EnemyPosition.X - _bossTexture.Width, (int)_geryon.EnemyPosition.Y - _bossTexture.Height, _bossTexture.Width * 2, _bossTexture.Height * 2);
+            foreach (Enemy enemy in _demonHorde)
+            {
+                Rectangle enemyCollRect = new Rectangle((int)enemy.EnemyPosition.X - _enemyTexture.Width, (int)enemy.EnemyPosition.Y - _enemyTexture.Height, _enemyTexture.Width, _enemyTexture.Height - 20);
+                if (playerCollRect.Intersects(enemyCollRect)){
+                    gc.PlayerDeath = true;
+                    _loseGame = true;
+                }
+            }
+            if (playerCollRect.Intersects(bossCollRect) && playerCollRect.Y >= bossCollRect.Y - 39 && gc.CurrentLevel == 2 && bossCollRect.Y > _playerTexture.Height * 2 && !_player.IsGrounded() && _player.Position.Y < (ScreenHeight - _playerTexture.Height * 3))
+            {
+                _player.Movement = -Vector2.UnitY * 55;
+                _player.Movement = -Vector2.UnitX * 100;
+                _geryon.Health -= 2;
+            }
+            else if (playerCollRect.Intersects(bossCollRect) && playerCollRect.Y < bossCollRect.Y && gc.CurrentLevel == 2)
+            {
+                gc.PlayerDeath = true;
+                _loseGame = true;
+            }
+        }
 
-        //    if (_player.Bounds.Bottom.Equals(_geryon.Bounds.Top))
-        //    {
-        //        _geryon.Health -= 20;
-        //    }
-        //}
+        public void CheckWinCondition()
+        {
+            if(_geryon.Health < 1)
+            {
+                _winGame = true;
+            }
+        }
 
 
 
@@ -204,7 +236,6 @@ namespace Konquer
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             _spriteBatch.Begin();
-            DrawPauseGame();
             base.Draw(gameTime);
             background1.Draw(_spriteBatch);
             _board.Draw(gameTime);
@@ -215,7 +246,6 @@ namespace Konquer
                 _coins[i].Draw(gameTime);
             }
 
-
             foreach (Enemy demon in _demonHorde)
                 demon.Draw(gameTime);
             if (gc.CurrentLevel == 2)
@@ -225,6 +255,7 @@ namespace Konquer
             }
             _player.Draw(gameTime);
             WriteInfo();
+            DrawPauseGame();
             _spriteBatch.End();
         }
 
@@ -233,7 +264,17 @@ namespace Konquer
             if (_pauseGame)
             {
                 _spriteBatch.Draw(_pauseMenuTexture, new Rectangle(0,0, ScreenWidth, ScreenHeight), Color.DarkSlateBlue);
-                _spriteBatch.DrawString(_myFont, "K O N Q U E R => Press P To Play", new Vector2((ScreenWidth / 2), ScreenHeight / 5), Color.IndianRed);
+                _spriteBatch.DrawString(_myFont, "K O N Q U E R => Press 'P' to play...", new Vector2((ScreenWidth / 2), ScreenHeight / 5), Color.IndianRed);
+            }
+            if (_loseGame)
+            {
+                _spriteBatch.Draw(_pauseMenuTexture, new Rectangle(0, 0, ScreenWidth, ScreenHeight), Color.DarkSlateBlue);
+                _spriteBatch.DrawString(_myFont, "Y O U  D I E D...", new Vector2((ScreenWidth / 2), ScreenHeight / 5), Color.IndianRed);
+            }
+            if (_winGame)
+            {
+                _spriteBatch.Draw(_pauseMenuTexture, new Rectangle(0, 0, ScreenWidth, ScreenHeight), Color.DarkSlateBlue);
+                _spriteBatch.DrawString(_myFont, "Y O U  A R E  V I C T O R I O U S...", new Vector2((ScreenWidth / 2), ScreenHeight / 5), Color.IndianRed);
             }
         }
 
@@ -244,19 +285,19 @@ namespace Konquer
 
         private void WriteInfo()
         {
-            string positionInText =
-                string.Format("Position of Player: ({0:0.0}, {1:0.0})", _player.Position.X, _player.Position.Y);
-            string movementInText =
-                string.Format("Current movement: ({0:0.0}, {1:0.0})", _player.Movement.X, _player.Movement.Y);
-            string isGroundedText =
-                string.Format("Grounded? : {0}", _player.IsGrounded());
+            //string positionInText =
+            //    string.Format("Position of Player: ({0:0.0}, {1:0.0})", _player.Position.X, _player.Position.Y);
+            //string movementInText =
+            //    string.Format("Current movement: ({0:0.0}, {1:0.0})", _player.Movement.X, _player.Movement.Y);
+            //string isGroundedText =
+            //    string.Format("Grounded? : {0}", _player.IsGrounded());
             string scoreCountText = string.Format("Score: {0} / {1}", gc.ScoreCount, gc.MaxScoreCount);
             string bossText = string.Format("Geryon ({0}%)", _geryon.Health);
 
-            _spriteBatch.DrawString(_myFont, positionInText, new Vector2(10, 0), Color.White);
-            _spriteBatch.DrawString(_myFont, movementInText, new Vector2(10, 20), Color.White);
-            _spriteBatch.DrawString(_myFont, isGroundedText, new Vector2(10, 40), Color.White);
-            _spriteBatch.DrawString(_myFont, scoreCountText, new Vector2(10, 60), Color.White);
+            //_spriteBatch.DrawString(_myFont, positionInText, new Vector2(10, 0), Color.White);
+            //_spriteBatch.DrawString(_myFont, movementInText, new Vector2(10, 20), Color.White);
+            //_spriteBatch.DrawString(_myFont, isGroundedText, new Vector2(10, 40), Color.White);
+            _spriteBatch.DrawString(_myFont, scoreCountText, new Vector2(35, 40), Color.White);
             if(gc.CurrentLevel == 2) { _spriteBatch.DrawString(_myFont, bossText, new Vector2((ScreenWidth / 3) + (ScreenWidth / 10), ScreenHeight / 10), Color.White); }
         }
     }

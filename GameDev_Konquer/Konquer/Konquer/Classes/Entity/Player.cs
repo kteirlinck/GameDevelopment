@@ -25,7 +25,6 @@ namespace Konquer.Classes.Sprites
         private long lastJumpTimeMillis { get; set; }
         private bool doubleJumpActivatable { get; set; }
         public Vector2 Movement { get; set; }
-        public int JumpCounter = 0;
 
         public void Load(ContentManager Content)
         {
@@ -106,6 +105,7 @@ namespace Konquer.Classes.Sprites
         {
             Position += Movement * (float)gameTime.ElapsedGameTime.TotalMilliseconds / 15;
         }
+
         public override void Draw(GameTime gameTime)
         {
             SpriteEffects flip = SpriteEffects.None;

@@ -42,8 +42,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Classes\Entity\Boss.cs" />
-    <Compile Include="Classes\InterfaceControls\Button.cs" />
-    <Compile Include="Classes\InterfaceControls\Control.cs" />
     <Compile Include="Classes\InterfaceControls\GameController.cs" />
     <Compile Include="Classes\Models\Spritesheet.cs" />
     <Compile Include="Classes\Models\Animation.cs" />

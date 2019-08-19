@@ -32,7 +32,7 @@ namespace Konquer.Classes.Sprites
             animationPlayer.PlayAnimation(animation);
          
             Position = new Vector2((Konquer.ScreenWidth / 2) - (animation.FrameWidth / 2), (Konquer.ScreenHeight / 2) + (animation.FrameHeight / 2));
-            collisionRectangle = new Rectangle((int)Position.X - animation.FrameWidth, (int)Position.Y - animation.FrameHeight, animation.FrameWidth, animation.FrameHeight);
+            collisionRectangle = new Rectangle((int)Position.X - (animation.FrameWidth / 3), (int)Position.Y - (animation.FrameHeight), animation.FrameWidth, animation.FrameHeight);
         }
 
         public Vortex(Texture2D texture, Vector2 position, SpriteBatch spriteBatch)

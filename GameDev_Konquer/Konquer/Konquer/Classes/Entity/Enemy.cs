@@ -55,7 +55,6 @@ namespace Konquer.Classes.Sprites
             Distance = newDistance;
             OldDistance = Distance;
             
-
             rand = new Random();
 
             ExpiredTimeSeconds = 0;
@@ -94,9 +93,9 @@ namespace Konquer.Classes.Sprites
             if (PlayerDistanceX >= -2000 && PlayerDistanceX <= 2000)
             {
                 if (PlayerDistanceX < -1)
-                    Movement.X = -1f;
+                    Movement.X = -0.5f;
                 else if (PlayerDistanceX > 1)
-                    Movement.X = 1f;
+                    Movement.X = 0.5f;
                 else if (PlayerDistanceX == 0)
                     Movement.X = 0f;
             }
@@ -106,9 +105,9 @@ namespace Konquer.Classes.Sprites
             if (PlayerDistanceY >= -2000 && PlayerDistanceY <= 2000)
             {
                 if (PlayerDistanceY < -1)
-                    Movement.Y = -1f;
+                    Movement.Y = -0.5f;
                 else if (PlayerDistanceY > 1)
-                    Movement.Y = 1f;
+                    Movement.Y = 0.5f;
                 else if (PlayerDistanceY == 0)
                     Movement.Y = 0f;
             }
@@ -157,7 +156,12 @@ namespace Konquer.Classes.Sprites
             else if (Movement.X < 0)
                 flip = SpriteEffects.FlipHorizontally;
 
-            animationPlayer.Draw(gameTime, enemySpriteBatch, EnemyPosition, flip);
+            Vector2 tempPos = EnemyPosition;
+
+            tempPos.Y += 40;
+            tempPos.X += 16;
+
+            animationPlayer.Draw(gameTime, enemySpriteBatch, tempPos, flip);
         }
     }
 }

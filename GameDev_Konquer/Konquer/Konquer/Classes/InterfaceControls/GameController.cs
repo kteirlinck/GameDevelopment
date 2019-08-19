@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace Konquer.Classes.InterfaceControls {
     class GameController {
         public bool LevelFinished { get; set; }
+        public bool PlayerDeath { get; set; }
 
         public int MaxScoreCount { get; set; }
 
