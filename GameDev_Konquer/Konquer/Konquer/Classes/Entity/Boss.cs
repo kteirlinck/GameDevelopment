@@ -13,25 +13,26 @@ using System.Threading.Tasks;
 
 namespace Konquer.Classes.Entity
 {
+    // Boss klasse: variatie op enemy; heeft health mechanic en gewijzigde bewegingseigenschappen
     public class Boss : Enemy
     {
-        Animation animationPlayer;
-        Spritesheet geryonAnimation;
+        Animation _animationPlayer;
+        Spritesheet _geryonAnimation;
 
-        private SpriteBatch bossSpriteBatch;
+        private SpriteBatch _bossSpriteBatch;
 
 
         public int Health;
 
         public override void Load(ContentManager Content)
         {
-            geryonAnimation = new Spritesheet(Content.Load<Texture2D>("nightmare-galloping"), 144, 0.2f, true);
-            animationPlayer.PlayAnimation(geryonAnimation);
+            _geryonAnimation = new Spritesheet(Content.Load<Texture2D>("nightmare-galloping"), 144, 0.2f, true);
+            _animationPlayer.PlayAnimation(_geryonAnimation);
         }
 
         public Boss(Texture2D texture, Vector2 position, SpriteBatch spriteBatch, float newDistance, int newHealth) : base(texture, position, spriteBatch, newDistance)
         {
-            bossSpriteBatch = spriteBatch;
+            _bossSpriteBatch = spriteBatch;
             EnemyPosition = position;
             Distance = newDistance;
             OldDistance = Distance;
@@ -41,7 +42,7 @@ namespace Konquer.Classes.Entity
         public override void Update(GameTime gameTime, Player player)
         {
             EnemyPosition += Movement;
-            Origin = new Vector2(geryonAnimation.FrameWidth / 2, geryonAnimation.FrameHeight / 2);
+            Origin = new Vector2(_geryonAnimation.FrameWidth / 2, _geryonAnimation.FrameHeight / 2);
             if (Distance <= 0)
             {
                 Right = true;
@@ -78,7 +79,7 @@ namespace Konquer.Classes.Entity
                 else if (PlayerDistanceY == 0)
                     Movement.Y = 0f;
             }
-            if(EnemyPosition.Y < Konquer.ScreenHeight - player.Texture.Height && EnemyPosition.Y > Konquer.ScreenHeight - player.Texture.Height * 4)
+            if(EnemyPosition.Y < Konquer.ScreenHeight - player.Texture.Height && EnemyPosition.Y > Konquer.ScreenHeight - player.Texture.Height * 5)
             {
                 Movement.X = Movement.X * 2;
             }
@@ -94,7 +95,7 @@ namespace Konquer.Classes.Entity
             else if (Movement.X < 0)
                 flip = SpriteEffects.None;
 
-            animationPlayer.Draw(gameTime, bossSpriteBatch, EnemyPosition, flip);
+            _animationPlayer.Draw(gameTime, _bossSpriteBatch, EnemyPosition, flip);
         }
     }
 }

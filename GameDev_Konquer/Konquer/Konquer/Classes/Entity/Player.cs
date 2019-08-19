@@ -13,24 +13,25 @@ using System.Threading.Tasks;
 
 namespace Konquer.Classes.Sprites
 {
-    // In de Player klasse wordt gameplay input verwerkt en positie/beweging berekend.
+    // In de Player klasse worden gameplay input verwerkt en positie/beweging berekend. Hier wordt ook gecontroleerd op de beperkingen in 
+    // bewegingsvrijheid van de speler. Ook worden hier physics van de speler ingesteld zoals zwaartekracht en frictie met de ondergrond.
     public class Player : Sprite
     {
-        Animation animationPlayer;
-        Spritesheet runAnimation;
-        Spritesheet idleAnimation;
+        Animation _animationPlayer;
+        Spritesheet _runAnimation;
+        Spritesheet _idleAnimation;
 
-        private SpriteBatch playerSpriteBatch;
-        private Vector2 pastPosition;
-        private long lastJumpTimeMillis { get; set; }
-        private bool doubleJumpActivatable { get; set; }
+        private SpriteBatch _playerSpriteBatch;
+        private Vector2 _pastPosition;
+        private long _lastJumpTimeMillis { get; set; }
+        private bool _doubleJumpActivatable { get; set; }
         public Vector2 Movement { get; set; }
 
         public void Load(ContentManager Content)
         {
-            idleAnimation = new Spritesheet(Content.Load<Texture2D>("hero/gothic-hero-idle"), 38, 0.3f, true);
-            runAnimation = new Spritesheet(Content.Load<Texture2D>("hero/gothic-hero-run"), 66, 0.1f, true);
-            animationPlayer.PlayAnimation(idleAnimation);
+            _idleAnimation = new Spritesheet(Content.Load<Texture2D>("hero/gothic-hero-idle"), 38, 0.3f, true);
+            _runAnimation = new Spritesheet(Content.Load<Texture2D>("hero/gothic-hero-run"), 66, 0.1f, true);
+            _animationPlayer.PlayAnimation(_idleAnimation);
         }
 
         public bool IsGrounded()
@@ -42,13 +43,13 @@ namespace Konquer.Classes.Sprites
 
         public bool CanDoubleJump()
         {
-            return ((DateTime.Now.Ticks / 1000) - lastJumpTimeMillis > 800) && doubleJumpActivatable;
+            return ((DateTime.Now.Ticks / 1000) - _lastJumpTimeMillis > 800) && _doubleJumpActivatable;
         }
 
         public Player(Texture2D texture, Vector2 position, SpriteBatch spriteBatch)
             : base(texture, position, spriteBatch)
         {
-            this.playerSpriteBatch = spriteBatch;
+            this._playerSpriteBatch = spriteBatch;
         }
 
         public void Update(GameTime gameTime)
@@ -67,14 +68,14 @@ namespace Konquer.Classes.Sprites
 
         private void MoveIfOk(GameTime gameTime)
         {
-            pastPosition = Position;
+            _pastPosition = Position;
             UpdatePosition(gameTime);
-            Position = Board.CurrentBoard.AllowedMovement(pastPosition, Position, Bounds);
+            Position = Board.CurrentBoard.AllowedMovement(_pastPosition, Position, Bounds);
         }
 
         private void StopWhenBlocked()
         {
-            Vector2 lastMovement = Position - pastPosition;
+            Vector2 lastMovement = Position - _pastPosition;
             if(lastMovement.X == 0) { Movement *= Vector2.UnitY; }
             if (lastMovement.Y == 0) { Movement *= Vector2.UnitX; }
         }
@@ -85,13 +86,13 @@ namespace Konquer.Classes.Sprites
 
             if (keyboardState.IsKeyDown(Keys.Left)) { Movement += new Vector2(-1, 0); }
             if (keyboardState.IsKeyDown(Keys.Right)) { Movement += new Vector2(1, 0); }
-            if (keyboardState.IsKeyDown(Keys.Space) && CanDoubleJump()) { Movement = -Vector2.UnitY * 55; doubleJumpActivatable = false; }
-            if (keyboardState.IsKeyDown(Keys.Space) && IsGrounded()) { lastJumpTimeMillis = DateTime.Now.Ticks / 1000; Movement = -Vector2.UnitY * 55; doubleJumpActivatable = true; }
+            if (keyboardState.IsKeyDown(Keys.Space) && CanDoubleJump()) { Movement = -Vector2.UnitY * 55; _doubleJumpActivatable = false; }
+            if (keyboardState.IsKeyDown(Keys.Space) && IsGrounded()) { _lastJumpTimeMillis = DateTime.Now.Ticks / 1000; Movement = -Vector2.UnitY * 55; _doubleJumpActivatable = true; }
 
             if (Movement.X == 0)
-                animationPlayer.PlayAnimation(idleAnimation);
+                _animationPlayer.PlayAnimation(_idleAnimation);
             else if (Movement.X != 0)
-                animationPlayer.PlayAnimation(runAnimation);
+                _animationPlayer.PlayAnimation(_runAnimation);
 
         }
 
@@ -120,7 +121,7 @@ namespace Konquer.Classes.Sprites
             tempPos.Y += 40;
             tempPos.X += 16;
 
-            animationPlayer.Draw(gameTime, playerSpriteBatch, tempPos, flip);
+            _animationPlayer.Draw(gameTime, _playerSpriteBatch, tempPos, flip);
         }
     }
 }

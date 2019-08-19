@@ -10,9 +10,12 @@ using System.Threading.Tasks;
 
 namespace Konquer.Classes.World
 {
-    // In de Board klasse wordt de wereld aangemaakt en ingevuld. Tevens wordt hier toegestane beweging/collision bepaald.
+    // In de Board klasse wordt de wereld aangemaakt (factory pattern) en ingevuld. Tevens wordt hier toegestane beweging/collision bepaald.
     public class Board
     {
+        private int _columns, _rows;
+        private Random _rnd = new Random();
+
         public Tile[,] Tiles { get; set; }
         
         public Texture2D TileTexture { get; set; }
@@ -28,7 +31,8 @@ namespace Konquer.Classes.World
             get { return _rows; }
         }
 
-        public bool HasRoomForRectangle(Rectangle rectangleToCheck)// Collision
+        // Hier wordt gecontroleerd op de aanwezigheid van een Tile element welk beweging blokkeert.
+        public bool HasRoomForRectangle(Rectangle rectangleToCheck)
         {
             foreach (var tile in Tiles)
             {
@@ -42,10 +46,6 @@ namespace Konquer.Classes.World
         
         public static Board CurrentBoard { get; private set; }
 
-        private int _columns, _rows;
-        private Random _rnd = new Random();
-
-        // opslaan params, instantiëren double array columns/rows, instantiëren Tile objects voor Tiles[,]
         public Board(SpriteBatch spriteBatch, Texture2D tileTexture, int columns, int rows)
         {
             Columns = columns;
@@ -55,6 +55,7 @@ namespace Konquer.Classes.World
             Tiles = new Tile[Columns, Rows];
         }
 
+        // Creatie van Level 1: de plaatsing van de elementen is willekeurig. Deze functie activeert het nieuwe Board ook.
         public void CreateNewRandomBoard() {
             CreateRandomBoard();
             SetBorderTilesBlocked();
@@ -62,6 +63,7 @@ namespace Konquer.Classes.World
             CurrentBoard = this;
         }
 
+        // Creatie van Level 2: het verschil met de bovenstaande functie is de afwezigheid van willekeur en aanwezigheid van statische platformen.
         public void CreateNewBossBoard()
         {
             CreateBoard();
@@ -71,6 +73,7 @@ namespace Konquer.Classes.World
             CurrentBoard = this;
         }
 
+        // Toewijzing statische platformen Level 2
         public void SetBossEncounterPlatforms()
         {
             //upper platforms
@@ -101,6 +104,7 @@ namespace Konquer.Classes.World
             Tiles[37, 18].IsBlocked = true;
         }
 
+        // De onderstaande functie controleert of de beweging van de speler mogelijk is binnen de context van de Board. (collision met tiles)
         public Vector2 AllowedMovement(Vector2 originalPosition, Vector2 destination, Rectangle boundingRectangle)
         {
             MovementWrapper move = new MovementWrapper(originalPosition, destination, boundingRectangle);
@@ -119,6 +123,8 @@ namespace Konquer.Classes.World
             return move.PlausibleCurrentPosition;
         }
 
+        // De onderstaande functie zorgt ervoor dat wanneer er vanuit een diagonale beweging over wordt gegaan in een non-diagonale beweging het momentum
+        // niet spontaan verloren gaat, maar omgezet wordt in een resterende beweging bij blokkade van de speler op de X-as of Y-as.
         private Vector2 CheckForNonDiagonalMovement(MovementWrapper wrapper, int i)
         {
             if (wrapper.IsDiagonalMove)
@@ -138,23 +144,24 @@ namespace Konquer.Classes.World
             return wrapper.PlausibleCurrentPosition;
         }
 
+        // De onderstaande rectangle dient wordt gebruikt ter controle of de afmetingen van de speler daadwerkelijk binnen de omgeving past bij beweging.
         private Rectangle CreateRectangleAtPosition(Vector2 positionToTry, int width, int height)
         {
             return new Rectangle((int)positionToTry.X, (int)positionToTry.Y, width, height);
         }
 
+        // Ongeblokkeerde spawnpoint linksboven.
         private void UnrestrictedPlayerSpawn()
         {
-            //TODO: OPSCHONEN
             Tiles[1, 1].IsBlocked = false;
             Tiles[1, 2].IsBlocked = false;
             Tiles[2, 1].IsBlocked = false;
             Tiles[2, 2].IsBlocked = false;
         }
 
+        // Willekeurige toewijzing van tiles binnen Level 1.
         private void CreateRandomBoard()
         {
-            //Tiles = new Tile[Columns, Rows];
             for (int x = 0; x < Columns; x++)
             {
                 for (int y = 0; y < Rows; y++)
@@ -165,6 +172,7 @@ namespace Konquer.Classes.World
             }
         }
 
+        // Creatie 'kaal' board.
         private void CreateBoard() {
             for (int x = 0; x < Columns; x++) {
                 for (int y = 0; y < Rows; y++) {
@@ -174,6 +182,7 @@ namespace Konquer.Classes.World
             }
         }
 
+        // Toewijzen van van de grenzen van de speelwereld.
         private void SetBorderTilesBlocked()
         {
             for (int x = 0; x < Columns; x++)

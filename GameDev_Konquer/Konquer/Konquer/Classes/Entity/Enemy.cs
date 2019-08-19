@@ -11,14 +11,17 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Konquer.Classes.Sprites
 {
+    // Enemy klasse: deze klasse beschrijft de eigenschappen van de demons in level 1 en legt een basis voor de Boss klasse met betrekking tot het achtervolgen 
+    // van de speler. Een unieke eigenschap van de Enemy klasse is dat deze ervoor zorgt dat de demons na enige tijd despawnen en respawnen om de speler
+    // een klein beetje te helpen.
     public class Enemy : Sprite
     {
-        Animation animationPlayer;
-        Spritesheet demonAnimation;
+        Animation _animationPlayer;
+        Spritesheet _demonAnimation;
 
-        private SpriteBatch enemySpriteBatch;
-        private Random rand;
-        private Rectangle CollisionRectangle;
+        private SpriteBatch _enemySpriteBatch;
+        private Random _rand;
+
 
         public Vector2 Movement;
         public Vector2 Origin;
@@ -42,20 +45,18 @@ namespace Konquer.Classes.Sprites
 
         public virtual void Load(ContentManager Content)
         {
-            demonAnimation = new Spritesheet(Content.Load<Texture2D>("demon-idle"), 160, 0.3f, true);
-            animationPlayer.PlayAnimation(demonAnimation);
-
-            CollisionRectangle = new Rectangle((int)Position.X, (int)Position.Y, demonAnimation.FrameWidth, demonAnimation.FrameHeight);
+            _demonAnimation = new Spritesheet(Content.Load<Texture2D>("demon-idle"), 160, 0.3f, true);
+            _animationPlayer.PlayAnimation(_demonAnimation);
         }
 
         public Enemy(Texture2D texture, Vector2 position, SpriteBatch spriteBatch, float newDistance) : base(texture, position, spriteBatch)
         {
-            enemySpriteBatch = spriteBatch;
+            _enemySpriteBatch = spriteBatch;
             EnemyPosition = position;
             Distance = newDistance;
             OldDistance = Distance;
             
-            rand = new Random();
+            _rand = new Random();
 
             ExpiredTimeSeconds = 0;
             StartTimeSeconds = DateTime.Now.Ticks / 1000 / 10000;
@@ -72,7 +73,7 @@ namespace Konquer.Classes.Sprites
                 return;
 
             EnemyPosition += Movement;
-            Origin = new Vector2(demonAnimation.FrameWidth / 2, demonAnimation.FrameHeight / 2);
+            Origin = new Vector2(_demonAnimation.FrameWidth / 2, _demonAnimation.FrameHeight / 2);
 
 
             if (Distance <= 0)
@@ -111,7 +112,6 @@ namespace Konquer.Classes.Sprites
                 else if (PlayerDistanceY == 0)
                     Movement.Y = 0f;
             }
-            //checkPlayerCollision(player);
         }
 
         public void CheckExpireThresholdReached() {
@@ -121,23 +121,13 @@ namespace Konquer.Classes.Sprites
             }
 
             if (HasExpired && ExpiredTimeSeconds - StartTimeSeconds > (ExpireThreshold + RespawnTime)) {
-                //float posX = Position.X < Konquer.ScreenWidth / 2 ? Konquer.ScreenWidth - Position.X : Position.X - Konquer.ScreenWidth;
-                //float posY = Position.Y < Konquer.ScreenHeight / 2 ? Konquer.ScreenHeight - Position.Y : Position.Y - Konquer.ScreenHeight;
-                //Position = new Vector2(100, 100);
+
                 
                 StartTimeSeconds = ExpiredTimeSeconds;
                 HasExpired = false;
             }
         }
 
-        //private void checkPlayerCollision(Player player) {
-        //    CollisionRectangle.X = (int)Position.X;
-        //    CollisionRectangle.Y = (int)Position.Y;
-
-        //    if (player.Bounds.Intersects(CollisionRectangle)) {
-        //        GameController.Instance.FinishLevel();
-        //    }
-        //}
 
         public void UpdatePosition(GameTime gameTime)
         {
@@ -161,7 +151,7 @@ namespace Konquer.Classes.Sprites
             tempPos.Y += 40;
             tempPos.X += 16;
 
-            animationPlayer.Draw(gameTime, enemySpriteBatch, tempPos, flip);
+            _animationPlayer.Draw(gameTime, _enemySpriteBatch, tempPos, flip);
         }
     }
 }

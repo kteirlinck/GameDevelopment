@@ -8,20 +8,20 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Konquer.Classes.Models
 {
-    // De Animation klasse biedt de basis voor de beschrijving van specifieke animations. Dit omvat het toewijzen van  het (aantal)frames/afmetingen/loops
+    // De Spritesheet klasse biedt de basis voor de beschrijving van specifieke animations. Dit omvat het toewijzen van  het (aantal)frames/afmetingen/loops
         class Spritesheet
         {
-            Texture2D texture;
+            Texture2D _texture;
             public Texture2D Texture
             {
-                get { return texture; }
+                get { return _texture; }
             }
 
             public int FrameWidth;
 
             public int FrameHeight
             {
-                get { return texture.Height; }
+                get { return _texture.Height; }
             }
 
             float frameTime;
@@ -40,11 +40,11 @@ namespace Konquer.Classes.Models
 
             public Spritesheet(Texture2D newTexture, int newFrameWidth, float newFrameTime, bool newIsLooping)
             {
-                texture = newTexture;
+                _texture = newTexture;
                 FrameWidth = newFrameWidth;
                 frameTime = newFrameTime;
                 isLooping = newIsLooping;
-                FrameCount = texture.Width / FrameWidth;
+                FrameCount = _texture.Width / FrameWidth;
             }
         }
     

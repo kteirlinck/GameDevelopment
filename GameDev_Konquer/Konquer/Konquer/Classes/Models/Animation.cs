@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace Konquer.Classes.Models
 {
-    // De AnimationPlayer klasse maakt het afspelen van animations mogelijk, waar de Animation een object is wijst de AnimationPlayer gedrag toe aan animations.
+    // De Animation klasse maakt het afspelen van animations mogelijk, waar de Spritesheet klasse eigenschappen voorziet wijst de Animation klasse gedrag toe.
     struct Animation
     {
-        Spritesheet spritesheet;
-        Rectangle drawRectangle;
+        Spritesheet _spritesheet;
+        Rectangle _drawRectangle;
         public Spritesheet Spritesheet
         {
-            get { return spritesheet; }
+            get { return _spritesheet; }
         }
 
         int frameIndex;
@@ -25,45 +25,45 @@ namespace Konquer.Classes.Models
             set { frameIndex = value; }
         }
 
-        private float timer;
+        private float _timer;
         public Vector2 Origin
         {
-            get { return new Vector2(spritesheet.FrameWidth / 2, spritesheet.FrameHeight); }
+            get { return new Vector2(_spritesheet.FrameWidth / 2, _spritesheet.FrameHeight); }
         }
 
         public void PlayAnimation(Spritesheet newAnimation)
         {
-            if (spritesheet == newAnimation)
+            if (_spritesheet == newAnimation)
                 return;
 
-            spritesheet = newAnimation;
+            _spritesheet = newAnimation;
             frameIndex = 0;
-            timer = 0;
+            _timer = 0;
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch, Vector2 position, SpriteEffects spriteEffects)
         {
             if (Spritesheet == null)
                 throw new NotSupportedException("No animation selected");
-            if (drawRectangle == null)
+            if (_drawRectangle == null)
                 new Rectangle(frameIndex * Spritesheet.FrameWidth, 0, Spritesheet.FrameWidth, Spritesheet.FrameHeight);
 
-            timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            while (timer >= spritesheet.FrameTime)
+            _timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            while (_timer >= _spritesheet.FrameTime)
             {
-                timer -= spritesheet.FrameTime;
+                _timer -= _spritesheet.FrameTime;
 
-                if (spritesheet.IsLooping)
-                    frameIndex = (frameIndex + 1) % spritesheet.FrameCount;
-                else frameIndex = Math.Min(frameIndex + 1, spritesheet.FrameCount - 1);
+                if (_spritesheet.IsLooping)
+                    frameIndex = (frameIndex + 1) % _spritesheet.FrameCount;
+                else frameIndex = Math.Min(frameIndex + 1, _spritesheet.FrameCount - 1);
             }
 
-            drawRectangle.X = frameIndex * Spritesheet.FrameWidth;
-            drawRectangle.Y = 0;
-            drawRectangle.Width = Spritesheet.FrameWidth;
-            drawRectangle.Height = Spritesheet.FrameHeight;
+            _drawRectangle.X = frameIndex * Spritesheet.FrameWidth;
+            _drawRectangle.Y = 0;
+            _drawRectangle.Width = Spritesheet.FrameWidth;
+            _drawRectangle.Height = Spritesheet.FrameHeight;
 
-            spriteBatch.Draw(Spritesheet.Texture, position, drawRectangle, Color.White, 0f, Origin, 1f, spriteEffects, 0f);
+            spriteBatch.Draw(Spritesheet.Texture, position, _drawRectangle, Color.White, 0f, Origin, 1f, spriteEffects, 0f);
         }
     }
 }

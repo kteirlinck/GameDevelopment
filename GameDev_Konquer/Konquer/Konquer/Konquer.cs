@@ -10,9 +10,6 @@ using System.Collections.Generic;
 
 namespace Konquer
 {
-    /// <summary>
-    /// This is the main type for your game.
-    /// </summary>
     public class Konquer : Game
     {
         private GraphicsDeviceManager _graphics;
@@ -33,22 +30,19 @@ namespace Konquer
         private Background background1;
 
         private SpriteFont _myFont;
+        private Random _rand = new Random();
+        private Texture2D _healthTexture;
+        private Rectangle _healthRectangle;
 
         private GameController gc;
         private bool _pauseGame { get; set; }
         private bool _winGame { get; set; }
         private bool _loseGame { get; set; }
 
-        private Random _rand = new Random();
 
-        // Boss Stuff
-        private Texture2D _healthTexture;
-        private Rectangle _healthRectangle;
         public int GeryonHealth = 100;
 
-        //screen resolution
         public static int ScreenWidth = 1888, ScreenHeight = 1000;
-        //tile dimensions
         public static int TileWidth = 32, TileHeight = 40;
 
         public Konquer()
@@ -61,7 +55,7 @@ namespace Konquer
             gc = GameController.Instance;
             gc.CurrentLevel = 1;
             gc.ScoreCount = 0;
-            gc.MaxScoreCount = 2;
+            gc.MaxScoreCount = 1;
         }
 
         protected override void Initialize()
@@ -72,6 +66,8 @@ namespace Konquer
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            // Onderstaande 4 textures worden gebruikt voor collision bepalingen.
             _tileTexture = Content.Load<Texture2D>("Tiles/L2/BlockA1");
             _playerTexture = Content.Load<Texture2D>("Tiles/L2/BlockA1");
             _enemyTexture = Content.Load<Texture2D>("Tiles/L2/BlockA1");
@@ -90,6 +86,8 @@ namespace Konquer
             _board = new Board(_spriteBatch, _tileTexture, 59, 25);
             _board.CreateNewRandomBoard();
 
+            // Hier worden de ingestelde hoeveelheid (gc.MaxScoreCount) Coins in de speelwereld op een willekeurige plaats gezet, met controle dat deze niet
+            // per ongeluk worden ingebouwd door random geplaatste blocked tiles.
             _coins = new List<Coin>();
             for (int i = 0; i < gc.MaxScoreCount; i++) {
                 Vector2 randPos = new Vector2((_rand.Next(0, Konquer.ScreenWidth / TileWidth) * TileWidth) + 24, _rand.Next(0, Konquer.ScreenHeight / TileHeight) * TileHeight);
@@ -125,6 +123,7 @@ namespace Konquer
             // TODO: Unload any non ContentManager content here
         }
 
+
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -150,7 +149,6 @@ namespace Konquer
                 _player.Update(gameTime);
                 _vortex.Update(gameTime, _player);
 
-
                 _spawn += (float)gameTime.ElapsedGameTime.TotalSeconds;
                 foreach (Enemy demon in _demonHorde)
                     demon.Update(gameTime, _player);
@@ -169,10 +167,11 @@ namespace Konquer
             }
         }
 
+        // Deze functie maakt demons aan een verwijdert deze wanneer Level 1 klaar is.
         public void LoadEnemies()
         {
-            int randX = _rand.Next(100, 1788);
-            int randY = _rand.Next(100, 900);
+            int randX = _rand.Next(_tileTexture.Width * 2, ScreenWidth - _tileTexture.Width * 2);
+            int randY = _rand.Next(_tileTexture.Height * 2, ScreenHeight - _tileTexture.Height * 2);
 
             if (_spawn >= 1)
             {
@@ -196,6 +195,8 @@ namespace Konquer
             }
         }
 
+        // Onderstaande functie omvat de speler-enemy/boss interacties die plaatsvinden, om dit werkend te krijgen was er een kleine toevoeging m.b.t.
+        // collision-rectangles nodig die alleen hier van toepassing zijn.
         public void CheckLivingEntityCollision(Player _player)
         {
             Rectangle playerCollRect = new Rectangle((int)_player.Position.X, (int)_player.Position.Y, _playerTexture.Width, _playerTexture.Height);
@@ -208,11 +209,11 @@ namespace Konquer
                     _loseGame = true;
                 }
             }
-            if (playerCollRect.Intersects(bossCollRect) && playerCollRect.Y >= bossCollRect.Y - 39 && gc.CurrentLevel == 2 && bossCollRect.Y > _playerTexture.Height * 2 && !_player.IsGrounded() && _player.Position.Y < (ScreenHeight - _playerTexture.Height * 3))
+            if (playerCollRect.Intersects(bossCollRect) && playerCollRect.Y >= bossCollRect.Y - 39 && gc.CurrentLevel == 2 && bossCollRect.Y > _playerTexture.Height * 2 && !_player.IsGrounded() && _player.Position.Y < (ScreenHeight - _playerTexture.Height * 5))
             {
                 _player.Movement = -Vector2.UnitY * 55;
                 _player.Movement = -Vector2.UnitX * 100;
-                _geryon.Health -= 2;
+                _geryon.Health -= 3;
             }
             else if (playerCollRect.Intersects(bossCollRect) && playerCollRect.Y < bossCollRect.Y && gc.CurrentLevel == 2)
             {
@@ -223,8 +224,9 @@ namespace Konquer
 
         public void CheckWinCondition()
         {
-            if(_geryon.Health < 1)
+            if(gc.CurrentLevel == 2 && _geryon.Health < 1)
             {
+                gc.FinishLevel();
                 _winGame = true;
             }
         }
@@ -259,6 +261,7 @@ namespace Konquer
             _spriteBatch.End();
         }
 
+        // Onderstaande functie voorziet een simplistische versie voor startscherm/eindschermen.
         public void DrawPauseGame()
         {
             if (_pauseGame)
@@ -278,11 +281,14 @@ namespace Konquer
             }
         }
 
+        // Deze functie voorkomt dat het spel gelijk begint bij het starten van het programma en maakt de weergave van het startscherm dus mogelijk.
         public void TriggerPauseGame()
         {
             _pauseGame = true;
         }
 
+
+        // Onderstaande functie is zowel gebruikt voor debugging tijdens development alsook uiteindelijke weergaven van gameplay objectives in UI-vorm. 
         private void WriteInfo()
         {
             //string positionInText =

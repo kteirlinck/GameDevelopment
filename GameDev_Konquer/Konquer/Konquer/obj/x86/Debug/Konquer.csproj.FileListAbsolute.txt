@@ -232,10 +232,7 @@ C:\Users\Koen\Documents\0_EAICT_jaar3_sem1\Game_Development_18-19\Konquer\GameDe
 C:\Users\Koen\Documents\0_EAICT_jaar3_sem1\Game_Development_18-19\Konquer\GameDev_Konquer\GameDevelopment\GameDev_Konquer\Konquer\Konquer\bin\Windows\x86\Debug\Content\Tiles\L1\5.xnb
 C:\Users\Koen\Documents\0_EAICT_jaar3_sem1\Game_Development_18-19\Konquer\GameDev_Konquer\GameDevelopment\GameDev_Konquer\Konquer\Konquer\bin\Windows\x86\Debug\Content\Tiles\L1\6.xnb
 C:\Users\Koen\Documents\0_EAICT_jaar3_sem1\Game_Development_18-19\Konquer\GameDev_Konquer\GameDevelopment\GameDev_Konquer\Konquer\Konquer\bin\Windows\x86\Debug\Content\Tiles\L1\8.xnb
-C:\Users\Koen\Documents\0_EAICT_jaar3_sem1\Game_Development_18-19\Konquer\GameDev_Konquer\GameDevelopment\GameDev_Konquer\Konquer\Konquer\bin\Windows\x86\Debug\Content\hero\gothic-hero-attack.xnb
-C:\Users\Koen\Documents\0_EAICT_jaar3_sem1\Game_Development_18-19\Konquer\GameDev_Konquer\GameDevelopment\GameDev_Konquer\Konquer\Konquer\bin\Windows\x86\Debug\Content\hero\gothic-hero-hurt.xnb
 C:\Users\Koen\Documents\0_EAICT_jaar3_sem1\Game_Development_18-19\Konquer\GameDev_Konquer\GameDevelopment\GameDev_Konquer\Konquer\Konquer\bin\Windows\x86\Debug\Content\hero\gothic-hero-idle.xnb
-C:\Users\Koen\Documents\0_EAICT_jaar3_sem1\Game_Development_18-19\Konquer\GameDev_Konquer\GameDevelopment\GameDev_Konquer\Konquer\Konquer\bin\Windows\x86\Debug\Content\hero\gothic-hero-jump-attack.xnb
 C:\Users\Koen\Documents\0_EAICT_jaar3_sem1\Game_Development_18-19\Konquer\GameDev_Konquer\GameDevelopment\GameDev_Konquer\Konquer\Konquer\bin\Windows\x86\Debug\Content\hero\gothic-hero-jump.xnb
 C:\Users\Koen\Documents\0_EAICT_jaar3_sem1\Game_Development_18-19\Konquer\GameDev_Konquer\GameDevelopment\GameDev_Konquer\Konquer\Konquer\bin\Windows\x86\Debug\Content\hero\gothic-hero-run.xnb
 C:\Users\Koen\Documents\0_EAICT_jaar3_sem1\Game_Development_18-19\Konquer\GameDev_Konquer\GameDevelopment\GameDev_Konquer\Konquer\Konquer\bin\Windows\x86\Debug\Content\BG\BG0.xnb
@@ -249,7 +246,6 @@ C:\Users\Koen\Documents\0_EAICT_jaar3_sem1\Game_Development_18-19\Konquer\GameDe
 C:\Users\Koen\Documents\0_EAICT_jaar3_sem1\Game_Development_18-19\Konquer\GameDev_Konquer\GameDevelopment\GameDev_Konquer\Konquer\Konquer\bin\Windows\x86\Debug\Content\coin.xnb
 C:\Users\Koen\Documents\0_EAICT_jaar3_sem1\Game_Development_18-19\Konquer\GameDev_Konquer\GameDevelopment\GameDev_Konquer\Konquer\Konquer\bin\Windows\x86\Debug\Content\DebugFont.xnb
 C:\Users\Koen\Documents\0_EAICT_jaar3_sem1\Game_Development_18-19\Konquer\GameDev_Konquer\GameDevelopment\GameDev_Konquer\Konquer\Konquer\bin\Windows\x86\Debug\Content\demon-idle.xnb
-C:\Users\Koen\Documents\0_EAICT_jaar3_sem1\Game_Development_18-19\Konquer\GameDev_Konquer\GameDevelopment\GameDev_Konquer\Konquer\Konquer\bin\Windows\x86\Debug\Content\SoloButton.xnb
 C:\Users\Koen\Documents\0_EAICT_jaar3_sem1\Game_Development_18-19\Konquer\GameDev_Konquer\GameDevelopment\GameDev_Konquer\Konquer\Konquer\bin\Windows\x86\Debug\Content\whirlwind.xnb
 C:\Users\Koen\Documents\0_EAICT_jaar3_sem1\Game_Development_18-19\Konquer\GameDev_Konquer\GameDevelopment\GameDev_Konquer\Konquer\Konquer\bin\Windows\x86\Debug\Konquer.exe
 C:\Users\Koen\Documents\0_EAICT_jaar3_sem1\Game_Development_18-19\Konquer\GameDev_Konquer\GameDevelopment\GameDev_Konquer\Konquer\Konquer\bin\Windows\x86\Debug\Konquer.pdb
@@ -420,9 +416,5 @@ C:\Users\Koen\Documents\0_EAICT_jaar3_sem1\Game_Development_18-19\TempProj\Konqu
 C:\Users\Koen\Documents\0_EAICT_jaar3_sem1\Game_Development_18-19\TempProj\Konquer\Konquer\obj\x86\Debug\Konquer.csproj.CopyComplete
 C:\Users\Koen\Documents\0_EAICT_jaar3_sem1\Game_Development_18-19\TempProj\Konquer\Konquer\obj\x86\Debug\Konquer.exe
 C:\Users\Koen\Documents\0_EAICT_jaar3_sem1\Game_Development_18-19\TempProj\Konquer\Konquer\obj\x86\Debug\Konquer.pdb
-C:\Users\Koen\Documents\0_EAICT_jaar3_sem1\Game_Development_18-19\Konquer\GameDev_Konquer\GameDevelopment\GameDev_Konquer\Konquer\Konquer\bin\Windows\x86\Debug\Content\Bullet.xnb
 C:\Users\Koen\Documents\0_EAICT_jaar3_sem1\Game_Development_18-19\Konquer\GameDev_Konquer\GameDevelopment\GameDev_Konquer\Konquer\Konquer\bin\Windows\x86\Debug\Content\nightmare-galloping.xnb
-C:\Users\Koen\Documents\0_EAICT_jaar3_sem1\Game_Development_18-19\Konquer\GameDev_Konquer\GameDevelopment\GameDev_Konquer\Konquer\Konquer\bin\Windows\x86\Debug\Content\you_died.xnb
-C:\Users\Koen\Documents\0_EAICT_jaar3_sem1\Game_Development_18-19\Konquer\GameDev_Konquer\GameDevelopment\GameDev_Konquer\Konquer\Konquer\bin\Windows\x86\Debug\Content\you_lose.xnb
-C:\Users\Koen\Documents\0_EAICT_jaar3_sem1\Game_Development_18-19\Konquer\GameDev_Konquer\GameDevelopment\GameDev_Konquer\Konquer\Konquer\bin\Windows\x86\Debug\Content\you_win.xnb
 C:\Users\Koen\Documents\0_EAICT_jaar3_sem1\Game_Development_18-19\Konquer\GameDev_Konquer\GameDevelopment\GameDev_Konquer\Konquer\Konquer\bin\Windows\x86\Debug\Content\18.xnb

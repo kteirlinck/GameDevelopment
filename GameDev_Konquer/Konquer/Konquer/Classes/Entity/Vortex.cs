@@ -14,50 +14,50 @@ using System.Threading.Tasks;
 
 namespace Konquer.Classes.Sprites
 {
-    // In de Player klasse wordt gameplay input verwerkt en positie/beweging berekend.
+    // De Vortex klasse beschrijft het portaal dat tevoorschijn komt wanneer de benodigde collectible(s) voltooid is/zijn.
     public class Vortex : Sprite
     {
-        Animation animationPlayer;
-        Spritesheet animation;
+        Animation _animationPlayer;
+        Spritesheet _animation;
 
-        Rectangle collisionRectangle;
+        Rectangle _collisionRectangle;
 
-        private SpriteBatch spriteBatch;
+        private SpriteBatch _spriteBatch;
 
-        private GameController gc;
+        private GameController _gc;
 
         public void Load(ContentManager Content)
         {
-            animation = new Spritesheet(Content.Load<Texture2D>("whirlwind"), 192, 0.2f, true);
-            animationPlayer.PlayAnimation(animation);
+            _animation = new Spritesheet(Content.Load<Texture2D>("whirlwind"), 192, 0.2f, true);
+            _animationPlayer.PlayAnimation(_animation);
          
-            Position = new Vector2((Konquer.ScreenWidth / 2) - (animation.FrameWidth / 2), (Konquer.ScreenHeight / 2) + (animation.FrameHeight / 2));
-            collisionRectangle = new Rectangle((int)Position.X - (animation.FrameWidth / 3), (int)Position.Y - (animation.FrameHeight), animation.FrameWidth, animation.FrameHeight);
+            Position = new Vector2((Konquer.ScreenWidth / 2) - (_animation.FrameWidth / 2), (Konquer.ScreenHeight / 2) + (_animation.FrameHeight / 2));
+            _collisionRectangle = new Rectangle((int)Position.X - (_animation.FrameWidth / 3), (int)Position.Y - (_animation.FrameHeight), _animation.FrameWidth, _animation.FrameHeight);
         }
 
         public Vortex(Texture2D texture, Vector2 position, SpriteBatch spriteBatch)
             : base(texture, position, spriteBatch)
         {
-            this.spriteBatch = spriteBatch;
+            this._spriteBatch = spriteBatch;
 
-            gc = GameController.Instance;
+            _gc = GameController.Instance;
         }
 
         private bool ShouldSpawn() {
-            return gc.ScoreCount >= gc.MaxScoreCount && gc.CurrentLevel == 1;
+            return _gc.ScoreCount >= _gc.MaxScoreCount && _gc.CurrentLevel == 1;
         }
 
         public void Update(GameTime gameTime, Player player)
         {
-            if (collisionRectangle.Intersects(player.Bounds) && ShouldSpawn())
-                gc.FinishLevel();
+            if (_collisionRectangle.Intersects(player.Bounds) && ShouldSpawn())
+                _gc.FinishLevel();
             
         }
         
         public override void Draw(GameTime gameTime)
         {
             if (ShouldSpawn())
-                animationPlayer.Draw(gameTime, spriteBatch, Position, SpriteEffects.None);
+                _animationPlayer.Draw(gameTime, _spriteBatch, Position, SpriteEffects.None);
         }
     }
 }

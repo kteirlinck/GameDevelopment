@@ -5,19 +5,19 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Konquer.Classes.InterfaceControls {
+    // De GameController klasse voorziet de blauwdruk voor de singleton die de score/progressie bijhoudt en controle heeft over de progressie binnen het spel.
     class GameController {
+        private int _scoreCount;
         public bool LevelFinished { get; set; }
         public bool PlayerDeath { get; set; }
 
         public int MaxScoreCount { get; set; }
 
         public int CurrentLevel { get; set; }
-        private int _scoreCount;
         public int ScoreCount { 
             get { return _scoreCount; }
             set {
                 if (value > MaxScoreCount) {
-                    Console.WriteLine("MaxScoreCount has been reached, act accordingly");
                     FinishLevel();
                 }
                 _scoreCount = value;
@@ -27,11 +27,8 @@ namespace Konquer.Classes.InterfaceControls {
         public void FinishLevel() {
             if (!LevelFinished) {
                 LevelFinished = true;
-                Console.WriteLine("Level finished");
             }
         }
-
-
 
         private GameController() { }
         private static GameController instance;

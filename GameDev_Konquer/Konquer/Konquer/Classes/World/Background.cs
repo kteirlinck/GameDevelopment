@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace Konquer.Classes.World
 {
+    // De Background klasse voorziet de basis voor een geanimeerde achtergrond. Deze wordt in dit project geanimeerd door over de verschillende frames 
+    // (aparte bestanden in het geval van de achtergrond) te itereren wanneer deze in de lijst zijn ingeladen.
     public class Background
     {
-        List<Texture2D> Backgrounds;
-
-
         private Texture2D _activetexture;
+        private double _x = 0;
+        List<Texture2D> Backgrounds;
         int counter = 0;
-        private double x = 0;
 
         public Background()
         {
@@ -33,10 +33,10 @@ namespace Konquer.Classes.World
         {
             double temp = _activetexture.Width * ((double)gameTime.ElapsedGameTime.Milliseconds / 1000);
 
-            x += temp;
-            if (x >= _activetexture.Width / 8)
+            _x += temp;
+            if (_x >= _activetexture.Width / 8)
             {
-                x = 0;
+                _x = 0;
                 counter++;
                 if (counter >= Backgrounds.Count)
                     counter = 0;
@@ -50,8 +50,6 @@ namespace Konquer.Classes.World
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(_activetexture, new Rectangle(0, 0, 1888, 1000), Color.White);
-            //spriteBatch.Draw(_activetexture, new Rectangle(1280, 0, 1280, 720), Color.White);
         }
-
     }
 }

@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 
 namespace Konquer.Classes.Models
 {
-    // De MovementWrapper struct legt de basis waarmee de variabelen voor beweging/collision geïnitialiseerd kunnen worden
-    // en ermee gerekend kan worden.
+    // De MovementWrapper struct (representatie lichtgewicht objecten) legt de basis voor toegestane beweging.
+    // Het voorziet als het ware een vergelijking tussen de volgende factoren: 
+    // beoogde bestemming | originele positie | richting (horizontaal/verticaal/diagonaal | aantal 'stappen' van originele positie naar beoogde bestemming |
+    // stapgrootte | fysieke omlijning (BoundingRectangle) die gebruikt wordt om te controleren tot waar de beoogde beweging mogelijk is.
     public struct MovementWrapper
     {
         public Vector2 MovementAttempt { get; set; }

@@ -14,44 +14,43 @@ using System.Threading.Tasks;
 
 namespace Konquer.Classes.Sprites
 {
-    // In de Player klasse wordt gameplay input verwerkt en positie/beweging berekend.
+    // Coin klasse: animated collectible die alleen in level 1 geplaatsd wordt.
     public class Coin : Sprite
     {
-        Animation animationPlayer;
-        Spritesheet animation;
+        Animation _animationPlayer;
+        Spritesheet _animation;
 
-        Rectangle collisionRectangle;
+        Rectangle _collisionRectangle;
 
-        private SpriteBatch spriteBatch;
+        private SpriteBatch _spriteBatch;
 
-        private Random rand = new Random();
+        private Random _rand = new Random();
 
-        private int coinWidth = 32;
-        private int coinHeight = 40;
+        private int _coinWidth = 32;
+        private int _coinHeight = 40;
 
         public bool IsCollected { get; set; }
 
         public void Load(ContentManager Content)
         {
-            animation = new Spritesheet(Content.Load<Texture2D>("coin"), coinWidth, 0.2f, true);
-            animationPlayer.PlayAnimation(animation);
+            _animation = new Spritesheet(Content.Load<Texture2D>("coin"), _coinWidth, 0.2f, true);
+            _animationPlayer.PlayAnimation(_animation);
             
             
-            Console.WriteLine("Spawning coin at " + Position.ToString());
-            collisionRectangle = new Rectangle((int)Position.X, (int)Position.Y - animation.FrameHeight, animation.FrameWidth, animation.FrameHeight);
+            _collisionRectangle = new Rectangle((int)Position.X, (int)Position.Y - _animation.FrameHeight, _animation.FrameWidth, _animation.FrameHeight);
         }
 
         public Coin(Texture2D texture, Vector2 position, SpriteBatch spriteBatch)
             : base(texture, position, spriteBatch)
         {
-            this.spriteBatch = spriteBatch;
+            _spriteBatch = spriteBatch;
             IsCollected = false;
         }
 
         public void Update(GameTime gameTime, Player player)
         {
 
-            if (collisionRectangle.Intersects(player.Bounds) && !IsCollected) {
+            if (_collisionRectangle.Intersects(player.Bounds) && !IsCollected) {
                 IsCollected = true;
                 GameController.Instance.ScoreCount++;
             }
@@ -60,7 +59,7 @@ namespace Konquer.Classes.Sprites
         public override void Draw(GameTime gameTime)
         {
             if (!IsCollected)
-                animationPlayer.Draw(gameTime, spriteBatch, Position, SpriteEffects.None);
+                _animationPlayer.Draw(gameTime, _spriteBatch, Position, SpriteEffects.None);
         }
     }
 }
